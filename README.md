@@ -77,4 +77,4 @@ Stored notebook outputs are historical artifacts. The report describes 4,838 ADV
 A reliable follow-up comparison would first align objectives and transformations, check them against analytic posteriors and finite-difference gradients, use independent evaluation samples, and record seeds, objective/gradient calls and wall-clock time. Matching ADVI iterations to the number of fixed DADVI samples alone does not establish equal computational budgets. These checks and reruns are future work, not completed validation claimed by this README.
 
 
-[Back to the MVA project portfolio](https://github.com/PineappleBlowsnow/mva-portfolio)
+[Back to Ying Jin's project directory](https://github.com/PineappleBlowsnow#mva-projects)
