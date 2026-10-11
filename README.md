@@ -1,4 +1,6 @@
-# ADVI and DADVI: Bayesian inference experiments
+# Comparing ADVI and DADVI for Bayesian Inference
+
+**M1 Applied Mathematics / Statistics research project, Université Paris Dauphine-PSL**
 
 Joint M1 Applied Mathematics / Statistics research project at Université Paris Dauphine–PSL (2025), by **Ying JIN and Bethlehem MESSELU**, supervised by **Joshua J. Bon**.
 
@@ -49,11 +51,11 @@ There is no environment lockfile, automated test suite, or command-line experime
 
 ## Implementation notes and comparison limits
 
-These findings were checked against repository snapshot [`e7ac211`](https://github.com/PineappleBlowsnow/Dauphine-M1-Memoire_ADVI-vs-DADVI/tree/e7ac2118af22566254fd643fb52c53edff0c7e3a) on 23 September 2026. Cell indices below are **zero-based**. This README leaves the original notebooks, outputs and data unchanged.
+These findings were checked against repository snapshot [`e7ac211`](https://github.com/PineappleBlowsnow/variational-inference-advi-dadvi/tree/e7ac2118af22566254fd643fb52c53edff0c7e3a) on 23 September 2026. Cell indices below are **zero-based**. This README leaves the original notebooks, outputs and data unchanged.
 
 ### Trial aggregation in the meta-analysis notebook
 
-In [cell 5 of `Meta analysis.ipynb`](https://github.com/PineappleBlowsnow/Dauphine-M1-Memoire_ADVI-vs-DADVI/blob/e7ac2118af22566254fd643fb52c53edff0c7e3a/Meta%20analysis.ipynb), the NumPy `log_joint` sums the trial log-likelihoods and adds the transformed prior once. The Torch `log_joint_advi` instead returns a vector over trials. Its caller stacks these vectors and takes `torch.mean` across both Monte Carlo and trial dimensions.
+In [cell 5 of `Meta analysis.ipynb`](https://github.com/PineappleBlowsnow/variational-inference-advi-dadvi/blob/e7ac2118af22566254fd643fb52c53edff0c7e3a/Meta%20analysis.ipynb), the NumPy `log_joint` sums the trial log-likelihoods and adds the transformed prior once. The Torch `log_joint_advi` instead returns a vector over trials. Its caller stacks these vectors and takes `torch.mean` across both Monte Carlo and trial dimensions.
 
 Writing each trial's log-likelihood as `ell_j`, the transformed prior as `r`, and the number of trials as `J = 22`, the two objectives therefore use:
 
@@ -66,10 +68,13 @@ This changes the relative likelihood, prior and entropy weights; it is not a con
 
 ### Gaussian objective checks
 
-In [`Mémoire 3.1..ipynb`](https://github.com/PineappleBlowsnow/Dauphine-M1-Memoire_ADVI-vs-DADVI/blob/e7ac2118af22566254fd643fb52c53edff0c7e3a/M%C3%A9moire%203.1..ipynb), cell 34 uses `sum(log_std)` for the entropy contribution. When a single log scale is shared across two latent dimensions, the corresponding contribution should be twice that log scale. The displayed ELBO calls in cells 38 and 40 also pass `sigma2, tau2` where the function signature expects `tau2, sigma2`; the optimizer call in cell 40 uses the expected order. These issues require controlled checks before treating printed ELBOs as benchmark results.
+In [`Mémoire 3.1..ipynb`](https://github.com/PineappleBlowsnow/variational-inference-advi-dadvi/blob/e7ac2118af22566254fd643fb52c53edff0c7e3a/M%C3%A9moire%203.1..ipynb), cell 34 uses `sum(log_std)` for the entropy contribution. When a single log scale is shared across two latent dimensions, the corresponding contribution should be twice that log scale. The displayed ELBO calls in cells 38 and 40 also pass `sigma2, tau2` where the function signature expects `tau2, sigma2`; the optimizer call in cell 40 uses the expected order. These issues require controlled checks before treating printed ELBOs as benchmark results.
 
 ### Historical results and next validation steps
 
 Stored notebook outputs are historical artifacts. The report describes 4,838 ADVI iterations in the trial example, while the current notebook specifies 200 iterations and 200 fixed DADVI samples. The exact report-producing execution state has not been reconstructed. The findings above should therefore not be used to retroactively explain every reported numerical difference.
 
 A reliable follow-up comparison would first align objectives and transformations, check them against analytic posteriors and finite-difference gradients, use independent evaluation samples, and record seeds, objective/gradient calls and wall-clock time. Matching ADVI iterations to the number of fixed DADVI samples alone does not establish equal computational budgets. These checks and reruns are future work, not completed validation claimed by this README.
+
+
+[Back to the MVA project portfolio](https://github.com/PineappleBlowsnow/mva-portfolio)
